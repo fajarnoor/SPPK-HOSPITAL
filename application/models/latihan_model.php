@@ -113,6 +113,23 @@
         $query = $this->db->query("select * from comment where id='$id'");
         return $query->result_array();
     }
+	  
+     public function tambahbarupasien($id,$nama,$asal,$golongan_darah, $tanggal, $status, $umur, $jeniskelamin)
+     	{
+            $query = $this->db->query("INSERT INTO pasien values('$id','$nama','$asal','$golongan_darah','$tanggal','$status',$umur,'$jeniskelamin','pasien')");
+            return $query;
+        }
+     public function editpasien($id, $nama, $asal, $golongan, $tanggal, $status, $umur, $jeniskelamin)
+     	{
+            $query = $this->db->query("UPDATE pasien set `nama` = '$nama', `asal` = '$asal', `golongan_darah`= '$golongan', `tanggal_masuk` = '$tanggal', `status` = '$status', `umur` = $umur, `jeniskelamin` = '$jeniskelamin' where id='$id'");
+            return $query;
+        }
+     public function hapus($tab,$column,$id)
+        {
+            $query= $this->db->query("DELETE FROM $tab where $column ='$id'");
+            return $query;
+        }
+	    
 }
 
  //crud Admin 
