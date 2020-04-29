@@ -328,4 +328,83 @@ class latihan extends CI_Controller {
 		//alihkan ke master data
 		redirect('latihan/master_data_admin');
 	}
+	public function list_data()
+	{
+        if ($this->latihan_model->logged_id()) {
+			$data["list_pasien"] = $this->latihan_model->view_all_data('pasien');
+			$this->load->view('latihan_view', $data);
+        }else{
+			redirect('latihan/logout');
+		}
+	}
+	public function master_data()
+	{
+		if ($this->latihan_model->logged_id()) {
+			$data["list_pasien"] = $this->latihan_model->view_all_data('pasien');
+			$this->load->view('latihan_view_crud', $data);
+		} else {
+			redirect('latihan/logout');
+		}
+	}
+	public function tambah_data()
+	{
+		if ($this->latihan_model->logged_id()) {
+			$this->load->view('tambah_data_view');
+		} else {
+			redirect('latihan/logout');
+		}
+	}
+	public function tambah()
+	{
+		$id				= (trim(html_escape($this->input->post('id'))));
+		// menerima data kiriman dari fomr_tambah_data dan di simpan di berbagai variabel
+		$nama 			= (trim(html_escape($this->input->post('nama'))));
+		$asal 			= (trim(html_escape($this->input->post('asal'))));
+		$golongan_darah = (trim(html_escape($this->input->post('golongandarah'))));
+		$tanggal 		= (trim(html_escape($this->input->post('tanggal'))));
+		$status 		= (trim(html_escape($this->input->post('status'))));
+		$umur 	 		= (trim(html_escape($this->input->post('umur'))));
+		$jeniskelamin   = (trim(html_escape($this->input->post('jeniskelamin'))));
+		// simpan insert dengan query
+		$this->latihan_model->tambahbarupasien($id,$nama,$asal,$golongan_darah,$tanggal, $status, $umur, $jeniskelamin);
+		redirect('latihan/master_data');
+	}
+
+	public function arah_edit_data()
+	{
+		$id = $this->uri->segment(3);
+		// untuk mengambil hasil query dari model view_per_data
+		$data['data_edit'] = $this->latihan_model->view_per_data('pasien','id',$id);
+
+		// lalu akan di tembak ke view form edit
+		$this->load->view('edit_data_view',$data);
+	}
+	public function edit()
+	{
+		//buat menangkap data edit
+		$id 			= (trim(html_escape($this->input->post('id'))));
+		$nama 			= (trim(html_escape($this->input->post('nama'))));
+		$asal 			= (trim(html_escape($this->input->post('asal'))));
+		$golongan_darah = (trim(html_escape($this->input->post('golongandarah'))));
+		$tanggal_masuk 	= (trim(html_escape($this->input->post('tanggal'))));
+		$status 	 	= (trim(html_escape($this->input->post('status'))));
+		$umur 	 		= (trim(html_escape($this->input->post('umur'))));
+		$jeniskelamin   = (trim(html_escape($this->input->post('jeniskelamin'))));
+
+		//langsung kasih ke model buat di eksekusi
+		$this->latihan_model->editpasien($id,$nama,$asal,$golongan_darah, $tanggal_masuk, $status, $umur, $jeniskelamin);
+
+		//balikin kemode crud
+		redirect("latihan/master_data");
+	}
+	public function hapusdata(){
+		// untuk mengambil data dari url setelah site_url lalu garing ke 3
+		$id = $this->uri->segment(3);
+
+		//eksekusi sama model
+		$this->latihan_model->hapus('pasien','id',$id);
+
+		//alihkan ke master data
+		redirect('latihan/master_data');
+	}
 ?>
