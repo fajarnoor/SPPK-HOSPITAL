@@ -113,10 +113,7 @@
         $query = $this->db->query("select * from comment where id='$id'");
         return $query->result_array();
     }
-}
-
- //crud Admin 
-    public function tambahbaruadmin($id, $nama, $katasandi, $asal, $nohp, $email)
+        public function tambahbaruadmin($id, $nama, $katasandi, $asal, $nohp, $email)
     {
         $query = $this->db->query("INSERT INTO `admin` values('$id','$nama','$asal','$katasandi',md5(md5(md5('$katasandi'))),'$nohp','$email@sppk.co.id','admin')");
         return $query;
@@ -131,4 +128,7 @@
         $query = $this->db->query("DELETE FROM $tab where $column ='$id'");
         return $query;
     }
+}
+
+ 
 ?>
