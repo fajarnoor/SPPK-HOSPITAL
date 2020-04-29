@@ -14,6 +14,23 @@
         $query = $this->db->query("INSERT INTO `sharing` values('$id','$nama','$nama_file','$pesan','$tanggal')");
         return $query;
     }
+	
+	 public function tambahbaruuser($id, $nama, $katasandi, $asal, $nohp, $email)
+    {
+        $query = $this->db->query("INSERT INTO `akun` values('$id','$nama','$email','$asal','$nohp','$katasandi',md5(md5(md5('$katasandi'))),'user')");
+        return $query;
+    }
+    public function edituser($id, $nama, $katasandi, $asal, $nohp, $email)
+    {
+        $query = $this->db->query("UPDATE `akun` set `nama` = '$nama', `asal` = '$asal', `katasandi_asli`= '$katasandi', `katasandi`= md5(md5(md5('$katasandi'))), `no_hp` = '$nohp', `email` = '$email' where id='$id'");
+        return $query;
+    }
+    public function hapus_user($tab, $column, $id)
+    {
+        $query = $this->db->query("DELETE FROM $tab where $column ='$id'");
+        return $query;
+    }	
+		
     public function editsharing($id, $nama, $nama_file, $tanggal, $pesan)
     {
         $query = $this->db->query("UPDATE `sharing` set `nama` = '$nama', `nama_file` = '$nama_file', `waktu`= '$tanggal', `pesan`='$pesan' where id='$id'");
