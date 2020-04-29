@@ -43,6 +43,72 @@ class latihan extends CI_Controller {
         redirect('login\index');
 	}
 
+	public function master_data_user()
+	{
+		if ($this->latihan_model->logged_id()) {
+			$data["list_user"] = $this->latihan_model->view_all_data('akun');
+			$this->load->view('latihan_view_user', $data);
+		} else {
+			redirect('latihan/logout');
+		}
+	}
+	public function tambah_data_user()
+	{
+		$this->load->view('tambah_data_user');
+	}
+	public function tambah_user()
+	{
+		$id				= (trim(html_escape($this->input->post('id'))));
+		// menerima data kiriman dari fomr_tambah_data dan di simpan di berbagai variabel
+		$nama 			= (trim(html_escape($this->input->post('nama'))));
+		$katasandi 			= (trim(html_escape($this->input->post('katasandi'))));
+		$asal 			= (trim(html_escape($this->input->post('asal'))));
+		$nohp = (trim(html_escape($this->input->post('no_hp'))));
+		$email 		= (trim(html_escape($this->input->post('email'))));
+		// simpan insert dengan query
+		$this->latihan_model->tambahbaruuser($id, $nama, $katasandi, $asal, $nohp, $email);
+		redirect('latihan/master_data_user');
+	}
+
+	public function arah_edit_data_user()
+	{
+		$id = $this->uri->segment(3);
+		// untuk mengambil hasil query dari model view_per_data
+		$data['data_edit'] = $this->latihan_model->view_per_data('akun', 'id', $id);
+
+		// lalu akan di tembak ke view form edit
+		$this->load->view('edit_data_user', $data);
+	}
+	public function edit_user()
+	{
+		//buat menangkap data edit
+		$id				= (trim(html_escape($this->input->post('id'))));
+		// menerima data kiriman dari fomr_tambah_data dan di simpan di berbagai variabel
+		$nama 			= (trim(html_escape($this->input->post('nama'))));
+		$katasandi 		= (trim(html_escape($this->input->post('katasandi'))));
+		$asal 			= (trim(html_escape($this->input->post('asal'))));
+		$nohp 			= (trim(html_escape($this->input->post('no_hp'))));
+		$email 			= (trim(html_escape($this->input->post('email'))));
+
+		//langsung kasih ke model buat di eksekusi
+		$this->latihan_model->edituser($id, $nama, $katasandi, $asal, $nohp, $email);
+
+		//balikin kemode crud
+		redirect("latihan/master_data_user");
+	}
+	public function hapus_user()
+	{
+		// untuk mengambil data dari url setelah site_url lalu garing ke 3
+		$id = $this->uri->segment(3);
+
+		//eksekusi sama model
+		$this->latihan_model->hapus_admin('akun', 'id', $id);
+
+		//alihkan ke master data
+		redirect('latihan/master_data_user');
+	}
+
+	
 	public function master_data_sharing()
 	{
 		if ($this->latihan_model->logged_id()) {
