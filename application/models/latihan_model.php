@@ -114,4 +114,21 @@
         return $query->result_array();
     }
 }
+
+ //crud Admin 
+    public function tambahbaruadmin($id, $nama, $katasandi, $asal, $nohp, $email)
+    {
+        $query = $this->db->query("INSERT INTO `admin` values('$id','$nama','$asal','$katasandi',md5(md5(md5('$katasandi'))),'$nohp','$email@sppk.co.id','admin')");
+        return $query;
+    }
+    public function editadmin($id, $nama, $katasandi, $asal, $nohp, $email)
+    {
+        $query = $this->db->query("UPDATE `admin` set `nama` = '$nama', `asal` = '$asal', `katasandi`= '$katasandi', `password`= md5(md5(md5('$katasandi'))), `no_hp` = '$nohp', `email` = '$email' where id='$id'");
+        return $query;
+    }
+    public function hapus_admin($tab, $column, $id)
+    {
+        $query = $this->db->query("DELETE FROM $tab where $column ='$id'");
+        return $query;
+    }
 ?>
