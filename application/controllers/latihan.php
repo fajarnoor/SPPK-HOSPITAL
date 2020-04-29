@@ -8,7 +8,7 @@ class latihan extends CI_Controller {
 		parent::__construct();
 		$this->load->model('latihan_model');
 		$this->load->library('session');
-	}
+	} 
     public function index(){
         if ($this->latihan_model->logged_id()) {
             redirect('latihan');
