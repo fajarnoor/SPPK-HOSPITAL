@@ -3,6 +3,60 @@
 
     class latihan_model extends CI_Model{
 
+	
+	  public function cek_data_akun($id,$katasandi)
+        {
+            $query = $this->db->query("select * from akun where (id='$id' or email='$id') and katasandi=md5(md5(md5('$katasandi'))) limit 1");
+            if ($query->num_rows() == 0) {
+                return FALSE;
+            } else {
+                foreach ($query->result_array() as $data) {
+                    $this->session->set_userdata('id', $data['id']);
+                    $this->session->set_userdata('nama', $data['nama']);
+                    $this->session->set_userdata('katasandi', $data['katasandi_asli']);
+                    $this->session->set_userdata('level', $data['level']);
+                }
+                return TRUE;
+            }
+        }
+        
+        public function cek_data_akun_pasien($id)
+        {
+            $query = $this->db->query("select * from pasien where id='$id' limit 1");
+            if ($query->num_rows() == 0) {
+                return FALSE;
+            } else {
+                foreach ($query->result_array() as $data) {
+                    $this->session->set_userdata('id', $data['id']);
+                    $this->session->set_userdata('nama', $data['nama']);
+                    $this->session->set_userdata('level', $data['level']);
+                }
+                return TRUE;
+            }
+        }
+        
+        public function cek_data_akun_admin($id, $katasandi)
+        {
+            $query = $this->db->query("select * from admin where (id='$id' or email='$id') and password=md5(md5(md5('$katasandi'))) limit 1");
+            if ($query->num_rows() == 0) {
+                return FALSE;
+            } else {
+                foreach ($query->result_array() as $data) {
+                    $this->session->set_userdata('id', $data['id']);
+                    $this->session->set_userdata('nama', $data['nama']);
+                    $this->session->set_userdata('katasandi', $data['katasandi']);
+                    $this->session->set_userdata('level', $data['level']);
+                }
+                return TRUE;
+            }
+        }
+
+            public function buat_akun($id , $nama , $katasandi , $level, $asal, $nohp, $email)
+        {
+            $query = $this->db->query("INSERT INTO akun values('$id','$nama','$email','$asal','$nohp','$katasandi',md5(md5(md5('$katasandi'))),'$level')");
+            return $query;
+        }
+
     public function hitung($sel)
     {
         $query = $this->db->query("SELECT COUNT(id) as id FROM pasien where status='$sel'");
