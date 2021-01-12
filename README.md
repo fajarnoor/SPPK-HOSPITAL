@@ -1,4 +1,5 @@
 # TUBES WEBPRO 
+#Prototype Website Medic, Using CI, Bootstrap
 
 Projek yang diangkat yaitu SPPK-HOSPITAL
 projek tersebut merupakan singkatan dari Sistem Pengelolaan Pasien Korona di sebuah rumah sakit
